@@ -3,8 +3,66 @@
 <head>
     <meta charset="utf-8">
     <title>楓之谷命中率計算器</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
-    <style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        jQuery.expr[':'].contains = function(a, i, m) {
+            return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+        };
+        $(document).on('focus', '#search', function() {
+            var inp = $(this).val();
+            if (inp == '搜尋...') $(this).val('');
+        });
+        $(document).on('focusout', '#search', function() {
+            var inp = $(this).val();
+            if (inp == '') $(this).val('搜尋...');
+        });
+        $(document).on('keyup', '#search', function(){
+            var inp = $(this).val().toLowerCase();
+            if (inp !== '' && inp !== '搜尋...') {
+                $('#mobs').find('option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(inp));
+                });
+            } else {
+                $('#mobs').find('option').show();
+            }
+        });
+        worldSelect('all_zh_filtered_no_english_korean');
+        clearForm();
+        // 自動觸發命中計算
+        $(document).on('input change', '#level, #mainstat, #luk, #mobLevel, #mobAvoid', function() {
+            doSomeMath();
+        });
+        $(document).on('change', 'input[name="type"]', function() {
+            dmgType(this.id === 'magical' ? '智力:' : '命中:');
+            doSomeMath();
+        });
+        // 自動觸發命中計算
+        $(document).on('input change', '#level, #mainstat, #luk, #mobLevel, #mobAvoid', function() {
+            doSomeMath();
+        });
+        $(document).on('change', 'input[name="type"]', function() {
+            dmgType(this.id === 'magical' ? '智力:' : '命中:');
+            doSomeMath();
+        });
+        $(document).on('input change', '#level, #mainstat, #luk, #mobLevel, #mobAvoid', function() {
+            doSomeMath();
+        });
+        $(document).on('change', 'input[name="type"]', function() {
+            dmgType(this.id === 'magical' ? '智力:' : '命中:');
+            doSomeMath();
+        });
+    });
+$(document).on('input change', '#level, #mainstat, #luk, #mobLevel, #mobAvoid', function() {
+    doSomeMath();
+});
+$(document).on('change', 'input[name="type"]', function() {
+    dmgType(this.id === 'magical' ? '智力:' : '命中:');
+    doSomeMath();
+});
+</script>
+<style>
         body {
             background-color: #000;
             color: #fff;
@@ -194,7 +252,7 @@
                 <td>
                     <input autocomplete="off" id="search" size="9" value="搜尋..." style="text-align: left;">
                     <br>
-                    <select class="mobs" size="7" name="mobs" id="mobs" onchange="mobSelect(this.value)">
+                    <select class="mobs" size="7" name="mobs" id="mobs" onchange="mobSelect(this.value); doSomeMath();">
                         <option value="null">請選擇怪物</option>
                     </select>
                 </td>
@@ -226,45 +284,44 @@
         <input type="number" id="mobAvoid" min="0" max="999" value="0">
     </td>
 </tr>
+
 <tr>
-    <td>
-        
-        <label for="mob1acc">1% 命中需求:</label>
-        <input type="text" id="mob1acc" size="10" disabled="true">
-        <br>
-        <label for="mob100acc">100% 命中需求:</label>
-        <input type="text" id="mob100acc" size="8" disabled="true">
-        <br>
-        <label for="mobRate">實際命中率:</label>
-        <input type="text" id="mobRate" size="17" disabled="true">
-    </td>
-    <td>
-        <a id="liblink" target="_blank">
-            <img id="mobPic" src="" />
-        </a>
-    </td>
+  <td>
+    <a id="liblink" target="_blank">
+      <img id="mobPic" src="" />
+    </a>
+  </td>
+  <td rowspan="2">
+    <label for="mob1acc">1% 命中需求:</label>
+    <input type="text" id="mob1acc" size="10" disabled="true">
+    <br>
+    <label for="mob100acc">100% 命中需求:</label>
+    <input type="text" id="mob100acc" size="8" disabled="true">
+    <br>
+    <label for="mobRate">實際命中率:</label>
+    <input type="text" id="mobRate" size="17" disabled="true">
+  </td>
 </tr>
-<tr style="height: 200px; width: 200px;">
-    <td>
-        <label>弱點屬性:</label>
-        <label id="weak">-</label>
-        <br>
-        <label>強抗屬性:</label>
-        <label id="strong">-</label>
-        <br>
-        <label>免疫屬性:</label>
-        <label id="immune">-</label>
-        <br>
-        <label>HP:</label>
-        <label id="HP">-</label>
-        <br>
-        <label>EXP:</label>
-        <label id="EXP">-</label>
-        <br>
-    </td>
-    <td>
-        <button type="button" onclick="doSomeMath()">計算</button>
-    </td>
+<tr>
+  <td>
+    <label>弱點屬性:</label>
+    <label id="weak">-</label>
+    <br>
+    <label>強抗屬性:</label>
+    <label id="strong">-</label>
+    <br>
+    <label>免疫屬性:</label>
+    <label id="immune">-</label>
+    <br>
+    <label>HP:</label>
+    <label id="HP">-</label>
+    <br>
+    <label>EXP:</label>
+    <label id="EXP">-</label>
+  </td>
+</tr>
+    </table>
+  </td>
 </tr>
 </table>
 </form>
