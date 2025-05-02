@@ -229,6 +229,7 @@ $(document).on('change', 'input[name="type"]', function() {
                 acc100 = Math.floor((monAvoid + 1.0) * (1.0 + (0.04 * diff)));
                 acc1 = Math.round(0.41 * acc100);
                 var AccPart = (curAcc - acc1 + 1) / (acc100 - acc1 + 1);
+                if (AccPart > 1) AccPart = 1;
                 AccRatio = ((-0.7011618132 * Math.pow(AccPart, 2)) + (1.702139835 * AccPart)) * 100;
             }
 
